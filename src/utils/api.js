@@ -19,6 +19,12 @@ export const fetchMeal = (meal_id) => {
   });
 };
 
+export const fetchIngredients = () => {
+  return axiosInstance.get("/ingredients").then((ingredients) => {
+    return ingredients.data.ingredients;
+  });
+};
+
 export const fetchUser = (username) => {
   return axiosInstance.get(`/users/${username}`);
 };

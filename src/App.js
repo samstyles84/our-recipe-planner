@@ -8,6 +8,7 @@ import { GlobalStyle } from "./styling/styledGlobal";
 import React, { Component } from "react";
 import AllMeals from "./components/AllMeals/AllMeals";
 import Meal from "./components/Meal/Meal";
+import AllIngredients from "./components/Ingredients/AllIngredients";
 
 class App extends Component {
   state = {
@@ -30,6 +31,7 @@ class App extends Component {
         <Router>
           <Homepage path="/" />
           <AllMeals path="/meals" />
+          <AllIngredients path="/ingredients" />
           <Meal path="/meals/:meal_id" loggedInUser={this.state.loggedInUser} />
           <ErrorPage path="/error" status={408} msg={"Server not responding"} />
           <ErrorPage default status={404} msg={"Path not found"} />
