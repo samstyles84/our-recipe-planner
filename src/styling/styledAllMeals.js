@@ -11,6 +11,10 @@ export const StyledMealsContainer = styled.section`
   border-top: 0;
 `;
 
+export const StyleMealsHeader = styled.section`
+  grid-column: 2/3;
+`;
+
 export const StyledMealCard = styled.li`
   background-color: ${styleColours.middle};
   border: 2px solid;

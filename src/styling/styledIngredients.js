@@ -11,8 +11,8 @@ export const StyledIngredientsContainer = styled.section`
   border-top: 0;
 `;
 
-export const StyledIngredientCard = styled.li`
+export const StyledIngredientTable = styled.table`
   background-color: ${styleColours.middle};
   border: 2px solid;
-  margin: 10px;
+  margin: auto;
 `;

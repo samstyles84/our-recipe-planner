@@ -28,3 +28,12 @@ export const fetchIngredients = () => {
 export const fetchUser = (username) => {
   return axiosInstance.get(`/users/${username}`);
 };
+
+export const postMeal = (newMeal) => {
+  return axiosInstance.post(`/meals`, newMeal);
+};
+
+export const postIngredient = (newIngredient) => {
+  console.log(newIngredient);
+  return axiosInstance.post(`/ingredients`, newIngredient);
+};

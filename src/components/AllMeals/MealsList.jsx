@@ -6,7 +6,6 @@ const MealsList = ({ meals }) => {
   console.log(meals);
   return (
     <ul>
-      <h3>Meals</h3>
       {meals.map((meal) => {
         return (
           <StyledMealCard key={meal.meal_id}>

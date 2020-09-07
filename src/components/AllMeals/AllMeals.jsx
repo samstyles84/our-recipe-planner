@@ -3,8 +3,11 @@ import MealsList from "./MealsList";
 import * as api from "../../utils/api";
 import Loader from "../Loader";
 import ErrorPage from "../ErrorPage";
-import { navigate } from "@reach/router";
-import { StyledMealsContainer } from "../../styling/styledAllMeals";
+import { navigate, Link } from "@reach/router";
+import {
+  StyledMealsContainer,
+  StyleMealsHeader,
+} from "../../styling/styledAllMeals";
 
 class AllMeals extends Component {
   state = {
@@ -50,6 +53,12 @@ class AllMeals extends Component {
     return (
       <div>
         <StyledMealsContainer>
+          <StyleMealsHeader>
+            <h3>Meals</h3>
+            <Link to="/addmeal">
+              <button>Add meal</button>
+            </Link>
+          </StyleMealsHeader>
           <MealsList meals={meals} />
         </StyledMealsContainer>
       </div>

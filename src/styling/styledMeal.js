@@ -32,3 +32,27 @@ export const StyledSingleMeal = styled.section`
     margin: 10px;
   }
 `;
+
+export const StyledAddMealContainer = styled.div`
+  display: grid;
+  grid-template-columns: minmax(10px, auto) minmax(300px, 500px) minmax(
+      10px,
+      auto
+    );
+
+  border: 2px solid;
+  margin: 10px;
+  background-color: ${styleColours.quiteLight};
+`;
+
+export const StyledIngredientsTable = styled.table`
+  border: 2px solid;
+  margin: auto;
+  input {
+    width: 50px;
+  }
+`;
+
+export const StyledAddMealForm = styled.form`
+  grid-column: 2/3;
+`;
