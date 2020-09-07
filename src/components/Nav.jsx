@@ -11,13 +11,13 @@ class Nav extends Component {
         <Link to="/">
           <StyledNavButton>Home</StyledNavButton>
         </Link>
-        <Link to="/Meals">
+        <Link to="/meals">
           <StyledNavButton>Meals</StyledNavButton>
         </Link>
-        <Link to="/Ingredients">
+        <Link to="/ingredients">
           <StyledNavButton>Ingredients</StyledNavButton>
         </Link>
-        <Link to="/ShoppingList">
+        <Link to="/shoppinglist">
           <StyledNavButton>Shopping List</StyledNavButton>
         </Link>
         <br />
