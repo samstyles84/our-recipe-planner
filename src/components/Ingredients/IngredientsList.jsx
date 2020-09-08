@@ -5,13 +5,21 @@ import * as api from "../../utils/api";
 
 class IngredientsList extends Component {
   state = {
-    ingredients: [],
+    ingredients: this.props.ingredients,
     newIngredient: {},
   };
 
   componentDidMount() {
-    const { ingredients } = this.props;
-    this.setState({ ingredients: ingredients });
+    console.log("mounting");
+    console.log(this.state);
+    // const { ingredients } = this.props;
+    // this.setState({ ingredients: ingredients });
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (this.state.ingredients !== prevState.ingredients) {
+      console.log("updating");
+    }
   }
 
   handleSubmit = (submitEvent) => {
@@ -25,13 +33,16 @@ class IngredientsList extends Component {
     };
 
     api.postIngredient(newIngredient).then((newIngredient) => {
-      console.log(newIngredient);
+      console.log(newIngredient.data);
       // this.props.addComment(newComment);
     });
 
     this.setState((currentState) => {
+      console.log(this.state.ingredients, "setstate");
+      console.log(newIngredient.data);
       return {
-        newIngredient: "",
+        ingredients: [...currentState.ingredients, currentState.newIngredient],
+        newIngredient: { name: "", type: "", units: "" },
       };
     });
   };
@@ -46,7 +57,9 @@ class IngredientsList extends Component {
   };
 
   render() {
-    const { ingredients } = this.props;
+    console.log("rendering");
+    const { ingredients } = this.state;
+    console.log(this.state.newIngredient, "new ingredient");
     return (
       <ul>
         <h3>Ingredients</h3>
@@ -75,6 +88,7 @@ class IngredientsList extends Component {
                   id="name"
                   name="name"
                   size="20"
+                  value={this.state.newIngredient.name}
                   onChange={this.handleChange}
                 />
               </td>
@@ -84,6 +98,7 @@ class IngredientsList extends Component {
                   id="type"
                   name="type"
                   size="20"
+                  value={this.state.newIngredient.type}
                   onChange={this.handleChange}
                 />
               </td>
@@ -93,6 +108,7 @@ class IngredientsList extends Component {
                   id="units"
                   name="units"
                   size="7"
+                  value={this.state.newIngredient.units}
                   onChange={this.handleChange}
                 />
               </td>
