@@ -1,4 +1,6 @@
 import React, { Component } from "react";
+
+import { Link } from "@reach/router";
 import { StyledIngredientTable } from "../../styling/styledIngredients";
 
 import * as api from "../../utils/api";
@@ -6,12 +8,11 @@ import * as api from "../../utils/api";
 class IngredientsList extends Component {
   state = {
     ingredients: this.props.ingredients,
-    newIngredient: {},
+    newIngredient: { name: "", type: "", units: "" },
   };
 
   componentDidMount() {
     console.log("mounting");
-    console.log(this.state);
     // const { ingredients } = this.props;
     // this.setState({ ingredients: ingredients });
   }
@@ -25,25 +26,21 @@ class IngredientsList extends Component {
   handleSubmit = (submitEvent) => {
     submitEvent.preventDefault();
 
-    const { loggedInUser } = this.props;
     const newIngredient = {
       name: this.state.newIngredient.name,
       type: this.state.newIngredient.type,
       units: this.state.newIngredient.units,
     };
 
-    api.postIngredient(newIngredient).then((newIngredient) => {
-      console.log(newIngredient.data);
-      // this.props.addComment(newComment);
-    });
-
-    this.setState((currentState) => {
-      console.log(this.state.ingredients, "setstate");
-      console.log(newIngredient.data);
-      return {
-        ingredients: [...currentState.ingredients, currentState.newIngredient],
-        newIngredient: { name: "", type: "", units: "" },
-      };
+    api.postIngredient(newIngredient).then(() => {
+      api.fetchIngredients().then((ingredients) => {
+        this.setState((currentState) => {
+          return {
+            ingredients: ingredients,
+            newIngredient: { name: "", type: "", units: "" },
+          };
+        });
+      });
     });
   };
 
@@ -56,10 +53,22 @@ class IngredientsList extends Component {
     });
   };
 
+  removeIngredient = (target) => {
+    const ingredient_id = target.target.id;
+    api.deleteIngredient(ingredient_id).then(() => {
+      api.fetchIngredients().then((ingredients) => {
+        this.setState((currentState) => {
+          return { ingredients: ingredients };
+        });
+      });
+    });
+  };
+
   render() {
     console.log("rendering");
-    const { ingredients } = this.state;
-    console.log(this.state.newIngredient, "new ingredient");
+    const { ingredients, newIngredient } = this.state;
+    const { loggedInUser } = this.props;
+    let isNewIngredient = true;
     return (
       <ul>
         <h3>Ingredients</h3>
@@ -69,15 +78,37 @@ class IngredientsList extends Component {
               <th>Ingredient</th>
               <th>Type</th>
               <th>Units</th>
+              <th>Used recipes</th>
             </tr>
           </thead>
           <tbody>
             {ingredients.map((ingredient) => {
+              if (ingredient.name === newIngredient.name)
+                isNewIngredient = false;
               return (
                 <tr key={ingredient.ingredient_id}>
-                  <td>{ingredient.name}</td>
+                  <td>
+                    <Link to={`/ingredients/${ingredient.ingredient_id}`}>
+                      {ingredient.name}
+                    </Link>
+                  </td>
+
                   <td>{ingredient.type}</td>
                   <td>{ingredient.units}</td>
+                  {ingredient.recipesUsed > 0 ? (
+                    <td>{ingredient.recipesUsed}</td>
+                  ) : (
+                    <td>
+                      <button
+                        onClick={this.removeIngredient}
+                        key={ingredient.ingredient_id}
+                        id={ingredient.ingredient_id}
+                        disabled={!loggedInUser}
+                      >
+                        x
+                      </button>
+                    </td>
+                  )}
                 </tr>
               );
             })}
@@ -112,10 +143,25 @@ class IngredientsList extends Component {
                   onChange={this.handleChange}
                 />
               </td>
+              <td>
+                <button
+                  onClick={this.handleSubmit}
+                  disabled={
+                    !(
+                      isNewIngredient &&
+                      newIngredient.name &&
+                      newIngredient.type &&
+                      newIngredient.units &&
+                      loggedInUser
+                    )
+                  }
+                >
+                  +
+                </button>
+              </td>
             </tr>
           </tbody>
         </StyledIngredientTable>
-        <button onClick={this.handleSubmit}>Add</button>
       </ul>
     );
   }

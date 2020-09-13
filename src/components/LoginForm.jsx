@@ -14,7 +14,7 @@ class LoginForm extends Component {
     api
       .fetchUser(this.state.username)
       .then((res) => {
-        if (res.status === 200) {
+        if (res.data === true) {
           this.props.loginUser(this.state.username);
           this.setState((currentState) => {
             return {

@@ -15,4 +15,10 @@ export const StyledIngredientTable = styled.table`
   background-color: ${styleColours.middle};
   border: 2px solid;
   margin: auto;
+  button {
+    margin: 0px;
+    padding: 2px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+  }
 `;

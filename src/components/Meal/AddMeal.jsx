@@ -6,15 +6,28 @@ import {
   StyledAddMealContainer,
 } from "../../styling/styledMeal";
 
+import { Link } from "@reach/router";
+
 class AddMeal extends Component {
   state = {
-    newMeal: {},
-    ingredients: [{ ingredient_id: 0, name: "", quantity: 0 }],
+    newMeal: { name: "", portions: 0, source: "", votes: 0 },
+    possibleIngredients: [
+      { ingredient_id: 0, name: "", recipesUsed: 0, type: "", units: "" },
+    ],
+    recipe: [],
+    mealAdded: 0,
   };
 
   componentDidMount() {
     this.getIngredients().then((ingredients) => {
-      this.setState({ ingredients: ingredients });
+      ingredients.unshift({
+        ingredient_id: 0,
+        name: "",
+        recipesUsed: 0,
+        type: "",
+        units: "",
+      });
+      this.setState({ possibleIngredients: ingredients });
     });
   }
 
@@ -25,35 +38,69 @@ class AddMeal extends Component {
   handleSubmit = (submitEvent) => {
     submitEvent.preventDefault();
 
-    const { loggedInUser } = this.props;
+    const untangledRecipes = this.untangleRecipe(this.state.recipe);
+
     const newMeal = {
       name: this.state.newMeal.name,
-      portions: this.state.newMeal.portions,
+      portions: parseInt(this.state.newMeal.portions),
+      votes: 0,
+      source: this.state.newMeal.source,
+      recipe: untangledRecipes,
     };
 
-    api.postMeal(newMeal).then((newMeal) => {
+    api.postMeal(newMeal).then((meal) => {
+      console.log("meal added", meal.data.meal);
+      this.setState((currentState) => {
+        console.log("meal added", meal.data.meal.meal_id);
+        return {
+          mealAdded: meal.data.meal.meal_id,
+        };
+      });
+
       // this.props.addComment(newComment);
     });
+  };
 
-    this.setState((currentState) => {
-      return {
-        body: "",
+  untangleRecipe = (tangledRecipe) => {
+    const { possibleIngredients } = this.state;
+    const recipeArr = [];
+    tangledRecipe.forEach((item) => {
+      const itemNameLong = item.name;
+      const itemName = itemNameLong.slice(0, itemNameLong.indexOf("[") - 1);
+
+      const ingredient = possibleIngredients.filter((ingredient) => {
+        return ingredient.name === itemName;
+      });
+
+      const returnObj = {
+        ingredient_id: ingredient[0].ingredient_id,
+        quantity: parseInt(item.qty),
       };
+
+      recipeArr.push(returnObj);
     });
+    return recipeArr;
   };
 
   handleChange = (changeEvent) => {
     const value = changeEvent.target.value;
     const id = changeEvent.target.id;
     this.setState(() => {
-      return { newMeal: { [id]: value } };
+      return { newMeal: { ...this.state.newMeal, [id]: value } };
+    });
+  };
+
+  updateIngredients = (newIngredients) => {
+    this.setState(() => {
+      return { recipe: newIngredients };
     });
   };
 
   render() {
     console.log("rendering");
-    const ingredients = this.state.ingredients;
-    console.log(ingredients);
+    const possibleIngredients = this.state.possibleIngredients;
+
+    const { loggedInUser } = this.props;
     return (
       <StyledAddMealContainer>
         <StyledAddMealForm onSubmit={this.handleSubmit}>
@@ -63,29 +110,47 @@ class AddMeal extends Component {
             type="text"
             name="name"
             id="name"
-            value={this.state.name}
             onChange={this.handleChange}
           ></input>
+          <br />
           <label htmlFor="portions">Portions:</label>
           <input
             type="number"
             name="portions"
             id="portions"
-            value={this.state.portions}
+            onChange={this.handleChange}
+          ></input>
+          <br />
+          <label htmlFor="source">Recipe source:</label>
+          <input
+            type="text"
+            name="source"
+            id="source"
             onChange={this.handleChange}
           ></input>
           <br />
           <br />
+          <IngredientsTable
+            ingredientsArray={this.state.possibleIngredients}
+            returnRecipe={this.updateIngredients}
+          />
 
-          {this.state.ingredients.length > 0 && (
-            <IngredientsTable ingredientsArray={this.state.ingredients} />
-          )}
-
-          <button disabled={!this.props.loggedInUser || !this.state.name}>
+          <button
+            disabled={
+              !loggedInUser ||
+              !this.state.newMeal.name ||
+              !this.state.newMeal.portions
+            }
+          >
             Add new meal
           </button>
 
           <br />
+          {this.state.mealAdded > 0 && (
+            <Link to={`/meals/${this.state.mealAdded}`}>
+              <p>{`Meal ${this.state.mealAdded} added`}</p>
+            </Link>
+          )}
         </StyledAddMealForm>
       </StyledAddMealContainer>
     );

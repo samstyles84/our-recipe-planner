@@ -1,10 +1,11 @@
 import React, { Component } from "react";
 import { StyledIngredientsTable } from "../../styling/styledMeal";
 
+//Change var to const!
+
 class Ingredients extends Component {
   constructor(props) {
     super(props);
-
     this.state = {};
     this.state.filterText = "";
     this.state.ingredientsArray = this.props.ingredientsArray;
@@ -45,6 +46,7 @@ class Ingredients extends Component {
       }
       return ingredient;
     });
+    this.props.returnRecipe(newIngredients);
     this.setState({ ingredients: newIngredients });
   }
   render() {
@@ -85,16 +87,18 @@ class IngredientTable extends Component {
     });
     return (
       <div>
-        <StyledIngredientsTable>
-          <thead>
-            <tr>
-              <th>Ingredient</th>
-              <th>Quantity</th>
-            </tr>
-          </thead>
+        {this.props.ingredients.length > 0 && (
+          <StyledIngredientsTable>
+            <thead>
+              <tr>
+                <th>Ingredient</th>
+                <th>Quantity</th>
+              </tr>
+            </thead>
 
-          <tbody>{ingredient}</tbody>
-        </StyledIngredientsTable>
+            <tbody>{ingredient}</tbody>
+          </StyledIngredientsTable>
+        )}
         <button
           type="button"
           onClick={this.props.onRowAdd}
@@ -170,12 +174,20 @@ class IngredientNames extends Component {
           value={this.props.cellData.value}
           onChange={this.props.onIngredientTableUpdate}
         >
-          {ingredients.map((ingredient) => {
-            return (
-              <option key={ingredient.ingredient_id}>
-                {ingredient.name} ({ingredient.units})
-              </option>
-            );
+          {ingredients.map((ingredient, index) => {
+            if (index === 0) {
+              return (
+                <option key={ingredient.ingredient_id}>
+                  {ingredient.name}
+                </option>
+              );
+            } else {
+              return (
+                <option key={ingredient.ingredient_id}>
+                  {ingredient.name} [{ingredient.units}]
+                </option>
+              );
+            }
           })}
         </select>
       </td>
@@ -184,3 +196,5 @@ class IngredientNames extends Component {
 }
 
 export default Ingredients;
+
+//See https://codepen.io/Shamiul_Hoque/pen/LNavdZ/

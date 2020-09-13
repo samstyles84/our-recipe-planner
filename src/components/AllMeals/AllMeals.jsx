@@ -56,7 +56,7 @@ class AllMeals extends Component {
           <StyleMealsHeader>
             <h3>Meals</h3>
             <Link to="/addmeal">
-              <button>Add meal</button>
+              <button disabled={!this.props.loggedInUser}>Add meal</button>
             </Link>
           </StyleMealsHeader>
           <MealsList meals={meals} />

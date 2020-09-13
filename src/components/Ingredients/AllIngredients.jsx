@@ -50,7 +50,10 @@ class AllIngredients extends Component {
     return (
       <div>
         <StyledIngredientsContainer>
-          <IngredientsList ingredients={ingredients} />
+          <IngredientsList
+            ingredients={ingredients}
+            loggedInUser={this.props.loggedInUser}
+          />
         </StyledIngredientsContainer>
       </div>
     );
