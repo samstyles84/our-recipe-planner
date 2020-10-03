@@ -90,6 +90,20 @@ export const StyledLogin = styled.section`
   }
 `;
 
+export const StyledMealBar = styled.section`
+  padding: 5px;
+  position: sticky;
+  top: 124px;
+  overflow-y: visible;
+  border: 2px solid;
+  border-top: 0;
+  background: ${styleColours.veryLight};
+
+  input {
+    height: 22px;
+  }
+`;
+
 //The below is used for homepage, loader, error page
 export const StyledSection = styled.section`
   border: 2px solid;

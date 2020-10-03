@@ -59,7 +59,14 @@ class AllMeals extends Component {
               <button disabled={!this.props.loggedInUser}>Add meal</button>
             </Link>
           </StyleMealsHeader>
-          <MealsList meals={meals} />
+          <MealsList
+            meals={meals}
+            loggedInUser={this.props.loggedInUser}
+            addMealToList={this.props.addMealToList}
+            mealBarIDs={this.props.mealBarIDs}
+            mealBarNames={this.props.mealBarNames}
+            mealBarPortions={this.props.mealBarPortions}
+          />
         </StyledMealsContainer>
       </div>
     );

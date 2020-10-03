@@ -11,15 +11,39 @@ import Meal from "./components/Meal/Meal";
 import AddMeal from "./components/Meal/AddMeal";
 import AllIngredients from "./components/Ingredients/AllIngredients";
 import Ingredient from "./components/Ingredients/Ingredient";
+import MealBar from "./components/MealBar";
 
 class App extends Component {
   state = {
     loggedInUser: null,
+    mealIDs: [],
+    mealNames: [],
+    mealPortions: [],
   };
 
   loginUser = (loggedInUser) => {
     this.setState((currentState) => {
       return { loggedInUser: loggedInUser };
+    });
+  };
+
+  addMealToList = (mealIDs, mealNames, mealPortions) => {
+    this.setState((currentState) => {
+      return {
+        mealIDs: mealIDs,
+        mealNames: mealNames,
+        mealPortions: mealPortions,
+      };
+    });
+  };
+
+  removeMealFromList = (mealIDs, mealNames, mealPortions) => {
+    this.setState((currentState) => {
+      return {
+        mealIDs: mealIDs,
+        mealNames: mealNames,
+        mealPortions: mealPortions,
+      };
     });
   };
 
@@ -30,9 +54,23 @@ class App extends Component {
         <Header />
         <Nav />
         <LoginForm loginUser={this.loginUser} />
+        <MealBar
+          loggedInUser={this.state.loggedInUser}
+          mealBarIDs={this.state.mealIDs}
+          mealBarNames={this.state.mealNames}
+          mealBarPortions={this.state.mealPortions}
+          removeMealFromList={this.removeMealFromList}
+        />
         <Router>
           <Homepage path="/" />
-          <AllMeals path="/meals" loggedInUser={this.state.loggedInUser} />
+          <AllMeals
+            path="/meals"
+            loggedInUser={this.state.loggedInUser}
+            addMealToList={this.addMealToList}
+            mealBarIDs={this.state.mealIDs}
+            mealBarNames={this.state.mealNames}
+            mealBarPortions={this.state.mealPortions}
+          />
           <AllIngredients
             path="/ingredients"
             loggedInUser={this.state.loggedInUser}

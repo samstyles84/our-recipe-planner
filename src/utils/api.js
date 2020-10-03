@@ -90,6 +90,14 @@ export const addPhoto = (meal_id, photoData) => {
     data: photoData,
     headers: { "Content-Type": "multipart/form-data" },
   });
-
-  // axiosInstance.post(`/meals/${meal_id}`, photo);
 };
+
+// export const addPhoto = (meal_id, photoData) => {
+//   console.log(meal_id, photoData, "posting");
+//   return axios({
+//     method: "post",
+//     url: `http://localhost:9090/api/meals/${meal_id}`,
+//     data: photoData,
+//     headers: { "Content-Type": "multipart/form-data" },
+//   });
+// };
