@@ -12,6 +12,7 @@ import AddMeal from "./components/Meal/AddMeal";
 import AllIngredients from "./components/Ingredients/AllIngredients";
 import Ingredient from "./components/Ingredients/Ingredient";
 import MealBar from "./components/MealBar";
+import ShoppingList from "./components/ShoppingList/ShoppingList";
 
 class App extends Component {
   state = {
@@ -78,6 +79,13 @@ class App extends Component {
           <Ingredient
             path="/ingredients/:ingredient_id"
             loggedInUser={this.state.loggedInUser}
+          />
+          <ShoppingList
+            path="/shoppinglist"
+            loggedInUser={this.state.loggedInUser}
+            mealBarIDs={this.state.mealIDs}
+            mealBarNames={this.state.mealNames}
+            mealBarPortions={this.state.mealPortions}
           />
           <AddMeal path="/addmeal" />
           <Meal path="/meals/:meal_id" loggedInUser={this.state.loggedInUser} />

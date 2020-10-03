@@ -20,9 +20,7 @@ class AllMeals extends Component {
     this.getMeals();
   }
 
-  componentDidUpdate(prevProps, prevState) {
-    // this.getMeals();
-  }
+  componentDidUpdate(prevProps, prevState) {}
 
   getMeals = () => {
     return api

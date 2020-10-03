@@ -92,12 +92,6 @@ export const addPhoto = (meal_id, photoData) => {
   });
 };
 
-// export const addPhoto = (meal_id, photoData) => {
-//   console.log(meal_id, photoData, "posting");
-//   return axios({
-//     method: "post",
-//     url: `http://localhost:9090/api/meals/${meal_id}`,
-//     data: photoData,
-//     headers: { "Content-Type": "multipart/form-data" },
-//   });
-// };
+export const fetchShoppingList = (mealIDs) => {
+  return axiosInstance.get(`/ingredients/shoppinglist?${mealIDs}`);
+};
